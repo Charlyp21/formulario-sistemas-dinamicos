@@ -1,0 +1,503 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Formulario y Guía — Sistemas Dinámicos</title>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/3.2.2/es5/tex-mml-chtml.min.js"></script>
+<style>
+  :root {
+    box-sizing: border-box;
+    padding-top: env(safe-area-inset-top, 0px);
+    padding-bottom: env(safe-area-inset-bottom, 0px);
+    --bg: #faf8f5;
+    --surface: #ffffff;
+    --surface-2: #f2eee7;
+    --ink: #2b2620;
+    --ink-soft: #5a5248;
+    --accent: #8a4f3d;
+    --accent-2: #3d6e5c;
+    --accent-3: #4a5d8a;
+    --line: #e5ddd1;
+    --code-bg: #f6f1e8;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+      --bg: #1b1815;
+      --surface: #221f1b;
+      --surface-2: #29251f;
+      --ink: #f0e9df;
+      --ink-soft: #c7bcac;
+      --accent: #e0967e;
+      --accent-2: #7fc7ab;
+      --accent-3: #9db3f0;
+      --line: #3a352c;
+      --code-bg: #262119;
+    }
+  }
+  :root[data-theme="dark"] {
+    --bg: #1b1815;
+    --surface: #221f1b;
+    --surface-2: #29251f;
+    --ink: #f0e9df;
+    --ink-soft: #c7bcac;
+    --accent: #e0967e;
+    --accent-2: #7fc7ab;
+    --accent-3: #9db3f0;
+    --line: #3a352c;
+    --code-bg: #262119;
+  }
+  html { scroll-padding-top: env(safe-area-inset-top, 0px); }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0;
+    background: var(--bg);
+    color: var(--ink);
+    font-family: "Iowan Old Style", "Georgia", serif;
+    line-height: 1.6;
+    -webkit-font-smoothing: antialiased;
+  }
+  .wrap { max-width: 880px; margin: 0 auto; padding: 2.5rem 1.4rem 5rem; }
+  header.hero {
+    text-align: center;
+    padding: 2.2rem 1rem 2.6rem;
+    border-bottom: 3px double var(--accent);
+    margin-bottom: 2.2rem;
+  }
+  header.hero h1 {
+    font-size: clamp(1.6rem, 4vw, 2.3rem);
+    margin: 0 0 .4rem;
+    letter-spacing: .01em;
+    color: var(--accent);
+  }
+  header.hero p.sub {
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+    color: var(--ink-soft);
+    font-size: .95rem;
+    margin: 0;
+    text-transform: uppercase;
+    letter-spacing: .12em;
+  }
+  nav.toc {
+    background: var(--surface);
+    border: 1px solid var(--line);
+    border-radius: 14px;
+    padding: 1.2rem 1.4rem;
+    margin-bottom: 2.6rem;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  }
+  nav.toc h2 {
+    font-family: "Iowan Old Style", Georgia, serif;
+    font-size: 1.05rem;
+    margin: 0 0 .7rem;
+    color: var(--accent);
+  }
+  nav.toc ol { margin: 0; padding-left: 1.3rem; columns: 2; column-gap: 1.5rem; }
+  nav.toc li { margin-bottom: .35rem; font-size: .92rem; break-inside: avoid; }
+  nav.toc a { color: var(--ink); text-decoration: none; border-bottom: 1px dotted var(--line); }
+  nav.toc a:hover { color: var(--accent); }
+
+  .part-title {
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: .18em;
+    font-size: .8rem;
+    color: var(--accent-2);
+    margin: 3.2rem 0 .3rem;
+    padding-bottom: .3rem;
+    border-bottom: 1px solid var(--line);
+  }
+
+  section.card {
+    background: var(--surface);
+    border: 1px solid var(--line);
+    border-radius: 16px;
+    padding: 1.5rem 1.6rem 1.7rem;
+    margin-bottom: 1.6rem;
+    scroll-margin-top: 1rem;
+  }
+  section.card h2 {
+    margin-top: 0;
+    font-size: 1.25rem;
+    color: var(--accent);
+    display: flex;
+    align-items: baseline;
+    gap: .5rem;
+  }
+  section.card h2 .n {
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+    font-size: .75rem;
+    color: var(--ink-soft);
+    background: var(--surface-2);
+    border-radius: 999px;
+    padding: .15rem .55rem;
+  }
+  section.card h3 {
+    font-size: 1rem;
+    color: var(--accent-3);
+    margin: 1.4rem 0 .5rem;
+  }
+  table.formula {
+    width: 100%;
+    border-collapse: collapse;
+    margin: .6rem 0 1rem;
+    font-size: .95rem;
+  }
+  table.formula th, table.formula td {
+    text-align: left;
+    padding: .5rem .6rem;
+    border-bottom: 1px solid var(--line);
+    vertical-align: middle;
+  }
+  table.formula th {
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+    font-size: .72rem;
+    text-transform: uppercase;
+    letter-spacing: .08em;
+    color: var(--ink-soft);
+  }
+  .note {
+    background: var(--surface-2);
+    border-left: 4px solid var(--accent-2);
+    padding: .7rem 1rem;
+    border-radius: 8px;
+    font-size: .92rem;
+    margin: .8rem 0;
+  }
+  .note b { color: var(--accent-2); }
+  .warn {
+    background: var(--surface-2);
+    border-left: 4px solid var(--accent);
+    padding: .7rem 1rem;
+    border-radius: 8px;
+    font-size: .92rem;
+    margin: .8rem 0;
+  }
+  .warn b { color: var(--accent); }
+  .example {
+    background: var(--code-bg);
+    border-radius: 10px;
+    padding: .8rem 1rem;
+    font-size: .93rem;
+    margin: .7rem 0;
+  }
+  .example .lbl {
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+    font-size: .7rem;
+    text-transform: uppercase;
+    letter-spacing: .08em;
+    color: var(--accent-3);
+    display: block;
+    margin-bottom: .3rem;
+  }
+  p { margin: .6rem 0; }
+  ul, ol.steps { padding-left: 1.3rem; }
+  ol.steps li { margin-bottom: .4rem; }
+  .mjx-chtml { font-size: 105% !important; }
+  .overflow-x { overflow-x: auto; }
+  footer {
+    text-align: center;
+    color: var(--ink-soft);
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+    font-size: .8rem;
+    margin-top: 3rem;
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<header class="hero">
+  <h1>Sistemas Dinámicos — Tarea 1</h1>
+  <p class="sub">Formulario completo &amp; guía de conceptos para el examen</p>
+</header>
+
+<nav class="toc">
+  <h2>Contenido</h2>
+  <ol>
+    <li><a href="#f-derivadas">Derivadas: tabla y reglas</a></li>
+    <li><a href="#f-limites">Límites y comportamiento asintótico</a></li>
+    <li><a href="#f-integrales">Integrales: tabla y técnicas</a></li>
+    <li><a href="#f-ftc">FTC, integral definida y valor promedio</a></li>
+    <li><a href="#f-impropias">Integrales impropias</a></li>
+    <li><a href="#f-taylor">Polinomios de Taylor y Maclaurin</a></li>
+    <li><a href="#f-resto">Resto de Lagrange</a></li>
+    <li><a href="#f-verif">Verificación de soluciones de EDOs</a></li>
+    <li><a href="#f-lineal1">EDO lineal de 1er orden</a></li>
+    <li><a href="#f-separables">EDO separables</a></li>
+    <li><a href="#f-campos">Campos de pendientes y equilibrios</a></li>
+    <li><a href="#f-aplicaciones">Modelos de crecimiento/decaimiento</a></li>
+    <li><a href="#c-derivada">Concepto: la derivada</a></li>
+    <li><a href="#c-integral">Concepto: la integral</a></li>
+    <li><a href="#c-taylor">Concepto: Taylor</a></li>
+    <li><a href="#c-edo">Concepto: ecuaciones diferenciales</a></li>
+  </ol>
+</nav>
+
+<div class="part-title">Parte 1 · Formulario</div>
+
+<section class="card" id="f-derivadas">
+  <h2><span class="n">1</span>Derivadas: tabla y reglas</h2>
+  <h3>Reglas de combinación</h3>
+  <div class="overflow-x">
+  <table class="formula">
+    <tr><th>Regla</th><th>Fórmula</th></tr>
+    <tr><td>Producto</td><td>\((fg)' = f'g + fg'\)</td></tr>
+    <tr><td>Cociente</td><td>\(\left(\dfrac{f}{g}\right)' = \dfrac{f'g - fg'}{g^2}\)</td></tr>
+    <tr><td>Cadena</td><td>\((f(g(x)))' = f'(g(x))\cdot g'(x)\)</td></tr>
+  </table>
+  </div>
+  <h3>Derivadas básicas</h3>
+  <div class="overflow-x">
+  <table class="formula">
+    <tr><th>Función</th><th>Derivada</th></tr>
+    <tr><td>\(x^n\)</td><td>\(nx^{n-1}\)</td></tr>
+    <tr><td>\(e^{kx}\)</td><td>\(ke^{kx}\)</td></tr>
+    <tr><td>\(\ln(x)\)</td><td>\(1/x\)</td></tr>
+    <tr><td>\(\ln(g(x))\)</td><td>\(g'(x)/g(x)\)</td></tr>
+    <tr><td>\(\sin(kx)\)</td><td>\(k\cos(kx)\)</td></tr>
+    <tr><td>\(\cos(kx)\)</td><td>\(-k\sin(kx)\)</td></tr>
+    <tr><td>\(\tan(x)\)</td><td>\(\sec^2(x)\)</td></tr>
+    <tr><td>\(\arctan(x)\)</td><td>\(\dfrac{1}{1+x^2}\)</td></tr>
+    <tr><td>\(a^{f(x)}\) (base cte.)</td><td>\(a^{f(x)}\ln(a)\,f'(x)\)</td></tr>
+  </table>
+  </div>
+  <div class="example">
+    <span class="lbl">Ejemplo tipo (potencial de membrana)</span>
+    Si \(V(t) = -70 + 100te^{-0.5t}\), aplica <b>producto</b> a \(100t\cdot e^{-0.5t}\):<br>
+    \(V'(t) = 100e^{-0.5t} + 100t(-0.5)e^{-0.5t} = 100e^{-0.5t}(1-0.5t)\).<br>
+    Las unidades son mV/ms (variación de voltaje por unidad de tiempo).
+  </div>
+  <h3>Segunda derivada / puntos críticos e inflexión</h3>
+  <ul>
+    <li><b>Máximo/mínimo local:</b> resuelve \(f'(t)=0\) y evalúa el signo de \(f''(t)\) (o el cambio de signo de \(f'\)).</li>
+    <li><b>Punto de inflexión:</b> resuelve \(f''(t)=0\) y confirma que \(f''\) cambia de signo ahí.</li>
+  </ul>
+</section>
+
+<section class="card" id="f-limites">
+  <h2><span class="n">2</span>Límites y comportamiento asintótico</h2>
+  <div class="overflow-x">
+  <table class="formula">
+    <tr><th>Situación</th><th>Resultado</th></tr>
+    <tr><td>\(\displaystyle\lim_{t\to\infty} t^n e^{-kt}\) (\(k>0\))</td><td>\(0\) (la exponencial domina a cualquier potencia)</td></tr>
+    <tr><td>\(\displaystyle\lim_{t\to\infty} e^{-kt}\) (\(k>0\))</td><td>\(0\)</td></tr>
+    <tr><td>Forma \(\dfrac{\infty}{\infty}\) o \(\dfrac{0}{0}\)</td><td>Regla de L'Hôpital: \(\lim \dfrac{f}{g} = \lim \dfrac{f'}{g'}\)</td></tr>
+  </table>
+  </div>
+  <div class="note"><b>Tip:</b> para \(V(t) = -70+100te^{-0.5t}\), como \(te^{-0.5t}\to 0\), el potencial vuelve a \(-70\) mV: el reposo basal.</div>
+</section>
+
+<section class="card" id="f-integrales">
+  <h2><span class="n">3</span>Integrales: tabla y técnicas</h2>
+  <h3>Antiderivadas básicas</h3>
+  <div class="overflow-x">
+  <table class="formula">
+    <tr><th>\(f(x)\)</th><th>\(\int f(x)\,dx\)</th></tr>
+    <tr><td>\(x^n\ (n\neq-1)\)</td><td>\(\dfrac{x^{n+1}}{n+1}+C\)</td></tr>
+    <tr><td>\(1/x\)</td><td>\(\ln|x|+C\)</td></tr>
+    <tr><td>\(e^{kx}\)</td><td>\(\dfrac{1}{k}e^{kx}+C\)</td></tr>
+    <tr><td>\(\sin(kx)\)</td><td>\(-\dfrac{1}{k}\cos(kx)+C\)</td></tr>
+    <tr><td>\(\cos(kx)\)</td><td>\(\dfrac{1}{k}\sin(kx)+C\)</td></tr>
+    <tr><td>\(\dfrac{1}{1+x^2}\)</td><td>\(\arctan(x)+C\)</td></tr>
+    <tr><td>\(\dfrac{1}{a^2+x^2}\)</td><td>\(\dfrac{1}{a}\arctan(x/a)+C\)</td></tr>
+  </table>
+  </div>
+  <h3>Sustitución (regla de la cadena inversa)</h3>
+  <p>Si ves \(g'(x)\) multiplicando a \(f(g(x))\), haz \(u=g(x)\), \(du=g'(x)dx\).</p>
+  <div class="example">
+    <span class="lbl">Ejemplo (dopamina)</span>
+    \(\displaystyle\int \dfrac{t}{\sqrt{t^2+9}}dt\): sea \(u=t^2+9\), \(du=2t\,dt\) →
+    \(\displaystyle\tfrac12\int u^{-1/2}du = \sqrt{u}+C = \sqrt{t^2+9}+C\).
+  </div>
+  <h3>Integración por partes</h3>
+  <div class="overflow-x">
+  <table class="formula">
+    <tr><th>Fórmula</th><td colspan="1">\(\displaystyle\int u\,dv = uv - \int v\,du\)</td></tr>
+  </table>
+  </div>
+  <p><b>Regla mnemotécnica LIATE/ILATE</b> para elegir \(u\): Logarítmica, Inversa trig., Algebraica (polinomios), Trigonométrica, Exponencial — se elige \(u\) más arriba en la lista.</p>
+  <div class="example">
+    <span class="lbl">Ejemplo (corriente postsináptica, requiere partes DOS veces)</span>
+    \(\displaystyle\int t^2 e^{-t/2}dt\): con \(u=t^2\), \(dv=e^{-t/2}dt\) se reduce el grado de \(t\) hasta eliminarlo. El resultado tiene la forma \(e^{-t/2}(at^2+bt+c)+C\); conviene tabular (integración por partes tabular) para no perder signos.
+  </div>
+</section>
+
+<section class="card" id="f-ftc">
+  <h2><span class="n">4</span>Teorema Fundamental del Cálculo y valor promedio</h2>
+  <div class="overflow-x">
+  <table class="formula">
+    <tr><th>Concepto</th><th>Fórmula</th></tr>
+    <tr><td>TFC (parte 2)</td><td>\(\displaystyle\int_a^b f(x)\,dx = F(b)-F(a)\), con \(F'=f\)</td></tr>
+    <tr><td>Función acumulada</td><td>\(\displaystyle C(t) = C(0)+\int_0^t R(\tau)\,d\tau\)</td></tr>
+    <tr><td>Valor promedio integral</td><td>\(\displaystyle \bar R = \dfrac{1}{b-a}\int_a^b R(t)\,dt\)</td></tr>
+  </table>
+  </div>
+</section>
+
+<section class="card" id="f-impropias">
+  <h2><span class="n">5</span>Integrales impropias</h2>
+  <div class="overflow-x">
+  <table class="formula">
+    <tr><th>Definición</th><td>\(\displaystyle\int_0^\infty f(t)\,dt = \lim_{T\to\infty}\int_0^T f(t)\,dt\)</td></tr>
+  </table>
+  </div>
+  <ol class="steps">
+    <li>Encuentra la antiderivada \(F(t)\) (usualmente con partes o sustitución).</li>
+    <li>Evalúa \(F(T)-F(0)\).</li>
+    <li>Toma \(\lim_{T\to\infty}\) término por término; cualquier \(T^n e^{-kT}\to 0\).</li>
+  </ol>
+</section>
+
+<section class="card" id="f-taylor">
+  <h2><span class="n">6</span>Polinomios de Taylor y Maclaurin</h2>
+  <div class="overflow-x">
+  <table class="formula">
+    <tr><th>General (centrado en \(x_0\))</th><td>\(\displaystyle P_n(x) = \sum_{k=0}^{n}\dfrac{f^{(k)}(x_0)}{k!}(x-x_0)^k\)</td></tr>
+  </table>
+  </div>
+  <h3>Series de Maclaurin (\(x_0=0\)) que necesitas</h3>
+  <div class="overflow-x">
+  <table class="formula">
+    <tr><th>Función</th><th>Serie</th></tr>
+    <tr><td>\(e^x\)</td><td>\(1+x+\dfrac{x^2}{2!}+\dfrac{x^3}{3!}+\cdots\)</td></tr>
+    <tr><td>\(\sin(x)\)</td><td>\(x-\dfrac{x^3}{3!}+\dfrac{x^5}{5!}-\cdots\)</td></tr>
+    <tr><td>\(\cos(x)\)</td><td>\(1-\dfrac{x^2}{2!}+\dfrac{x^4}{4!}-\cdots\)</td></tr>
+    <tr><td>\(\dfrac{1}{1-x}\)</td><td>\(1+x+x^2+x^3+\cdots\) (\(|x|<1\))</td></tr>
+    <tr><td>\(\dfrac{1}{1+x^2}\)</td><td>sustituye \(x\to x^2,\text{signo }-\): \(1-x^2+x^4-\cdots\)</td></tr>
+  </table>
+  </div>
+  <div class="note"><b>Tip para \(f(x)=\sin(e^x)\):</b> primero expande \(e^x\) a 3er orden, sustitúyelo en la serie de \(\sin(u)\) y trunca todo lo que exceda grado 3.</div>
+  <h3>Ángulos notables (círculo unitario)</h3>
+  <div class="overflow-x">
+  <table class="formula">
+    <tr><th>\(x_0\)</th><th>\(\sin(x_0)\)</th><th>\(\cos(x_0)\)</th></tr>
+    <tr><td>\(0\)</td><td>\(0\)</td><td>\(1\)</td></tr>
+    <tr><td>\(\pi/6\)</td><td>\(1/2\)</td><td>\(\sqrt3/2\)</td></tr>
+    <tr><td>\(\pi/4\)</td><td>\(\sqrt2/2\)</td><td>\(\sqrt2/2\)</td></tr>
+    <tr><td>\(\pi/3\)</td><td>\(\sqrt3/2\)</td><td>\(1/2\)</td></tr>
+    <tr><td>\(\pi/2\)</td><td>\(1\)</td><td>\(0\)</td></tr>
+  </table>
+  </div>
+  <p>Para \(x=1.15\) rad, el más cercano es \(x_0=\pi/3\approx1.047\).</p>
+</section>
+
+<section class="card" id="f-resto">
+  <h2><span class="n">7</span>Resto de Lagrange (cota de error)</h2>
+  <div class="overflow-x">
+  <table class="formula">
+    <tr><th>Fórmula</th><td>\(\displaystyle |R_n(x)| = \left|\dfrac{f^{(n+1)}(\xi)}{(n+1)!}(x-x_0)^{n+1}\right|,\ \xi\in(x_0,x)\)</td></tr>
+  </table>
+  </div>
+  <ol class="steps">
+    <li>Calcula la derivada de orden \(n+1\) de \(f\).</li>
+    <li>Acota \(|f^{(n+1)}(\xi)|\) por su valor máximo posible (para \(\sin,\cos\): \(\le 1\)).</li>
+    <li>Sustituye \((x-x_0)^{n+1}\) con el valor numérico real.</li>
+  </ol>
+</section>
+
+<div class="part-title">Parte 1 · Formulario — Ecuaciones Diferenciales</div>
+
+<section class="card" id="f-verif">
+  <h2><span class="n">8</span>Verificación de soluciones</h2>
+  <p>Para confirmar que \(y(x)\) resuelve una EDO: deriva \(y\) (una o dos veces, según el orden), sustituye \(y\), \(y'\) (y \(y''\) si aplica) en la ecuación, y comprueba que se vuelva una identidad \(0=0\) o LHS = RHS.</p>
+  <div class="note"><b>Para 2do orden con raíces complejas</b> (p. ej. \(y''-6y'+13y=0\), \(y=e^{3x}\cos(2x)\)): la ecuación característica \(r^2-6r+13=0\) da \(r=3\pm 2i\); una solución real es \(e^{3x}\cos(2x)\) — por eso al sustituir debe cancelar exactamente.</div>
+</section>
+
+<section class="card" id="f-lineal1">
+  <h2><span class="n">9</span>EDO lineal de primer orden (factor integrante)</h2>
+  <div class="overflow-x">
+  <table class="formula">
+    <tr><th>Forma estándar</th><td>\(y' + P(x)y = Q(x)\)</td></tr>
+    <tr><th>Factor integrante</th><td>\(\mu(x) = e^{\int P(x)\,dx}\)</td></tr>
+    <tr><th>Solución</th><td>\(y = \dfrac{1}{\mu(x)}\left(\displaystyle\int \mu(x)Q(x)\,dx + C\right)\)</td></tr>
+  </table>
+  </div>
+  <ol class="steps">
+    <li>Escribe la ecuación en la forma \(y'+Py=Q\).</li>
+    <li>Calcula \(\mu=e^{\int P\,dx}\).</li>
+    <li>Multiplica toda la ecuación por \(\mu\): el lado izquierdo se vuelve \((\mu y)'\).</li>
+    <li>Integra ambos lados y despeja \(y\).</li>
+  </ol>
+  <div class="example">
+    <span class="lbl">Ejemplo tipo</span>
+    \(y'+2xy=x^3\): \(P(x)=2x\Rightarrow \mu=e^{x^2}\). Multiplica: \((e^{x^2}y)' = x^3e^{x^2}\), integra por partes/sustitución y despeja \(y\).
+  </div>
+  <div class="warn"><b>Aplicación (neuromodulador):</b> \(\frac{dC}{dt}+0.5C=4e^{-0.1t}\) es exactamente este tipo: \(P=0.5\) (constante), \(\mu=e^{0.5t}\).</div>
+</section>
+
+<section class="card" id="f-separables">
+  <h2><span class="n">10</span>EDO separables</h2>
+  <div class="overflow-x">
+  <table class="formula">
+    <tr><th>Forma</th><td>\(\dfrac{dy}{dx} = g(x)h(y)\)</td></tr>
+    <tr><th>Procedimiento</th><td>\(\displaystyle\int \dfrac{dy}{h(y)} = \int g(x)\,dx\)</td></tr>
+  </table>
+  </div>
+  <p>Sirve para \(y'=25+y^2\), \(dy/dx=\sin(5x)\), \(dy/dx=e^{3x+2y}=e^{3x}e^{2y}\) (separa exponenciales), y \(dy/dx=\left(\frac{2y+3}{4x+5}\right)^2\) (ya está en forma producto de función de \(x\) por función de \(y\)).</p>
+</section>
+
+<section class="card" id="f-campos">
+  <h2><span class="n">11</span>Campos de pendientes y soluciones de equilibrio</h2>
+  <ul>
+    <li>En cada punto \((x,y)\) del plano, la EDO \(y'=f(x,y)\) da la <b>pendiente</b> de la curva solución que pasa por ahí; dibujar muchos segmentos cortos con esa pendiente forma el campo.</li>
+    <li><b>Soluciones de equilibrio (constantes):</b> se hallan resolviendo \(f(x,y)=0\) para todo \(x\) → son rectas horizontales \(y=c\).</li>
+    <li>Para \(y'=y(1-y)\): equilibrios en \(y=0\) y \(y=1\). El signo de \(y(1-y)\) entre y fuera de esos valores indica si las curvas cercanas crecen o decrecen (atractor/repulsor).</li>
+  </ul>
+</section>
+
+<section class="card" id="f-aplicaciones">
+  <h2><span class="n">12</span>Modelos de crecimiento / decaimiento</h2>
+  <div class="overflow-x">
+  <table class="formula">
+    <tr><th>Modelo</th><th>EDO</th><th>Solución</th></tr>
+    <tr><td>Crecimiento/decaimiento exponencial simple</td><td>\(dP/dt = kP\)</td><td>\(P(t)=P_0e^{kt}\)</td></tr>
+  </table>
+  </div>
+  <p>Con dos datos (p. ej. \(P(3)=400\), \(P(10)=2000\)) se arma un sistema de 2 ecuaciones con 2 incógnitas (\(P_0,k\)) dividiendo una ecuación entre otra para despejar primero \(k\) con logaritmo natural, y luego \(P_0\).</p>
+</section>
+
+<div class="part-title">Parte 2 · Conceptos para el examen</div>
+
+<section class="card" id="c-derivada">
+  <h2>La derivada: qué significa y para qué se usa</h2>
+  <p>La derivada \(f'(t)\) es la <b>tasa de cambio instantánea</b> de una cantidad respecto a otra: cuánto cambia \(f\) por cada unidad que cambia \(t\), en el instante exacto \(t\). Geométricamente es la pendiente de la recta tangente a la curva; físicamente, en tus ejercicios, es velocidad de cambio del voltaje de membrana (mV/ms) o de la corriente (pA/ms).</p>
+  <p><b>Puntos críticos</b> (donde \(f'=0\)) marcan máximos, mínimos o "mesetas". Para saber cuál es cuál, revisas el signo de \(f'\) antes/después (crece→decrece = máximo) o el signo de \(f''\) en ese punto (negativo = cóncava hacia abajo = máximo).</p>
+  <p><b>Puntos de inflexión</b> (donde \(f''=0\) y cambia de signo) marcan dónde la curva cambia de concavidad — en biología esto suele representar el momento de <i>máxima velocidad</i> de un proceso (por ejemplo, la repolarización más rápida de la neurona), no el punto más alto/bajo.</p>
+  <p><b>Límites al infinito</b> te dicen el comportamiento a largo plazo del sistema: si \(\lim_{t\to\infty}V(t)=-70\), el modelo predice que la neurona siempre regresa a su potencial de reposo, sin importar el estímulo inicial.</p>
+</section>
+
+<section class="card" id="c-integral">
+  <h2>La integral: acumulación y promedio</h2>
+  <p>Si la derivada mide tasa de cambio, la <b>integral</b> hace lo inverso: acumula esa tasa a lo largo del tiempo para reconstruir la cantidad total. Si \(R(t)\) es una tasa (µM/s), entonces \(\int_0^t R(\tau)d\tau\) es el cambio acumulado en la cantidad (µM) entre \(0\) y \(t\) — por eso la concentración total es la concentración inicial más esa acumulación: \(C(t)=C(0)+\int_0^t R(\tau)d\tau\).</p>
+  <p>El <b>Teorema Fundamental del Cálculo</b> conecta ambas operaciones: para evaluar una integral definida, encuentras una antiderivada \(F\) y calculas \(F(b)-F(a)\); no necesitas sumar infinitos rectángulos a mano.</p>
+  <p>El <b>valor promedio integral</b> \(\bar R = \frac{1}{b-a}\int_a^b R\,dt\) responde "¿a qué tasa constante tendría que liberarse la sustancia para lograr la misma acumulación total en ese intervalo?" — es un promedio "continuo", análogo al promedio aritmético pero para funciones.</p>
+  <p>Una <b>integral impropia</b> (\(\int_0^\infty\)) aparece cuando quieres el total acumulado durante todo el evento, sin límite de tiempo fijo. Se resuelve como un límite: integras hasta un tiempo \(T\) finito y luego mandas \(T\to\infty\); si el resultado converge a un número finito, ese es el total "asintótico" (por ejemplo, la carga eléctrica total transferida por un canal que se va cerrando).</p>
+</section>
+
+<section class="card" id="c-taylor">
+  <h2>Polinomios de Taylor: por qué y cómo funcionan</h2>
+  <p>Un polinomio de Taylor es la <b>mejor aproximación polinómica local</b> de una función alrededor de un punto \(x_0\): coincide con la función en su valor, su pendiente, su curvatura, etc., hasta el orden que elijas. La idea es que muchas funciones (senos, cosenos, exponenciales) son difíciles de evaluar "a mano", pero un polinomio solo requiere sumas, productos y potencias.</p>
+  <p><b>Fundamento matemático:</b> si conoces todas las derivadas de \(f\) en \(x_0\), puedes reconstruir el comportamiento de \(f\) cerca de \(x_0\) sumando términos \(\frac{f^{(k)}(x_0)}{k!}(x-x_0)^k\) — cada término "corrige" un poco más la aproximación anterior (constante, luego pendiente, luego curvatura...).</p>
+  <p><b>Por qué elegir \(x_0\) cercano a \(x\):</b> el error de la aproximación (el resto de Lagrange) depende de la potencia \((x-x_0)^{n+1}\). Cuanto más pequeña sea la distancia \(x-x_0\), más rápido esa potencia tiende a cero, así que necesitas menos términos para un error aceptable. Por eso, para aproximar \(\cos(1.15)\), conviene centrar en \(\pi/3\approx1.047\) (distancia ≈0.1) y no en \(0\) (distancia ≈1.15).</p>
+  <p>A medida que aumenta el grado \(n\), el polinomio "captura" más curvatura de la función real y el error típicamente disminuye — puedes verlo numéricamente comparando \(P_1(1.15)\), \(P_2(1.15)\), \(P_3(1.15)\) contra el valor real de \(\cos(1.15)\).</p>
+  <p>El <b>resto de Lagrange</b> te da una <i>cota garantizada</i> del error sin necesitar el valor exacto de \(f\): usas el peor caso posible de la derivada de orden \(n+1\) (para seno/coseno, siempre \(\le 1\) en valor absoluto).</p>
+</section>
+
+<section class="card" id="c-edo">
+  <h2>Ecuaciones diferenciales: verificación, tipos y modelos</h2>
+  <p>Una <b>ecuación diferencial</b> (EDO) relaciona una función desconocida con sus propias derivadas. "Resolverla" significa encontrar la función \(y(x)\) o \(y(t)\) que la satisface; "verificar una solución propuesta" significa simplemente confirmar por sustitución directa que, al derivar la candidata y meterla en la ecuación, se cumple la igualdad.</p>
+  <p><b>EDO separables:</b> se pueden reescribir para tener toda la \(y\) (y \(dy\)) de un lado y toda la \(x\) (y \(dx\)) del otro. Funcionan cuando la ecuación es, literalmente, un producto de una función de \(x\) por una función de \(y\).</p>
+  <p><b>EDO lineales de primer orden</b> (\(y'+P(x)y=Q(x)\)) no siempre son separables, pero se resuelven con el <b>factor integrante</b> \(\mu=e^{\int P\,dx}\): multiplicar por \(\mu\) convierte el lado izquierdo en la derivada de un producto \((\mu y)'\), lo cual permite integrar directamente. Es la técnica que necesitas para el modelo del neuromodulador, donde \(P(t)=0.5\) es constante (recaptura proporcional a la concentración) y \(Q(t)=4e^{-0.1t}\) es un término de liberación que decae (el estímulo se agota con el tiempo).</p>
+  <p><b>EDO lineales de segundo orden con coeficientes constantes</b> (como \(y''-6y'+13y=0\)) se resuelven —cuando te las piden resolver, no solo verificar— planteando la <b>ecuación característica</b> \(r^2+br+c=0\). Si las raíces son complejas \(r=\alpha\pm\beta i\), la solución general real es \(y=e^{\alpha x}(A\cos(\beta x)+B\sin(\beta x))\); eso explica por qué \(e^{3x}\cos(2x)\) puede ser solución de una ecuación con \(r=3\pm2i\).</p>
+  <p><b>Campos de pendientes:</b> son una forma de "ver" las soluciones sin resolver la ecuación — cada segmento corto muestra hacia dónde se mueve \(y\) si estuviera ahí. Las <b>soluciones de equilibrio</b> (donde \(f(x,y)=0\) para todo \(x\)) son rectas horizontales que ni crecen ni decrecen; las curvas cercanas se alejan o se acercan a ellas dependiendo del signo de \(f\) a los lados, lo que en biología corresponde a estados estables o inestables de un sistema (por ejemplo, una población que se estabiliza en su capacidad de carga).</p>
+  <p><b>Modelos de crecimiento/decaimiento exponencial</b> (\(dP/dt=kP\)) aparecen constantemente en biología: la tasa de cambio es proporcional a la cantidad presente. Con dos mediciones en tiempos distintos puedes despejar tanto la constante de crecimiento \(k\) como la condición inicial \(P_0\), usualmente dividiendo una ecuación entre la otra para eliminar \(P_0\) primero y aplicando \(\ln\) para despejar \(k\).</p>
+  <p><b>Interpretación física de términos en una EDO:</b> en \(\frac{dC}{dt}=-0.5C+4e^{-0.1t}\), el término \(-0.5C\) representa la <i>salida</i> del sistema (recaptura, proporcional a lo que hay — entre más hay, más rápido se recapta), y \(4e^{-0.1t}\) representa la <i>entrada</i> (liberación provocada por el estímulo, que se agota con el tiempo). El comportamiento a largo plazo (\(t\to\infty\)) de este tipo de modelos suele tender a cero, consistente con que, sin más estímulo, el neuromodulador termina siendo eliminado del espacio sináptico.</p>
+</section>
+
+<footer>Formulario y guía preparados a partir de tu Tarea 1 — Sistemas Dinámicos.</footer>
+
+</div>
+</body>
+</html>
